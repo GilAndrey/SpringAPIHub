@@ -34,10 +34,16 @@ public class ProductController {
 //        return product.isPresent() ? product.get() : null
         return productRepository.findById(id).orElse(null);
     }
-    
+
     @DeleteMapping("/{id}")
     public void deletedById(@PathVariable("id") String id) {
         productRepository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public void updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
+        product.setId(id);
+        productRepository.save(product);
     }
 
 }
