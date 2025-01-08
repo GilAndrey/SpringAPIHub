@@ -9,6 +9,6 @@ public class HondaHRV extends Car {
         setModel("HRV");
         setColor(Color.BLACK);
         setAutomaker(Automaker.HONDA);
-        
+
     }
 }
