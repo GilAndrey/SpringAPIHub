@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class testFactoryController {
 
     @Autowired
+    @Electric
     private Engine engine;
 
     @PostMapping
