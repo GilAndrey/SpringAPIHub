@@ -14,8 +14,8 @@ public class TodoEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "fl_completed")
-    private Boolean completed;
+    @Column(name = "concluido")
+    private Boolean concluido;
 
     public Integer getId() {
         return id;
@@ -33,11 +33,11 @@ public class TodoEntity {
         this.description = description;
     }
 
-    public Boolean getCompleted() {
-        return completed;
+    public Boolean getConcluido() {
+        return concluido;
     }
 
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
+    public void setConcluido(Boolean concluido) {
+        this.concluido = concluido;
     }
 }
