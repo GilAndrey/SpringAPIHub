@@ -24,6 +24,7 @@ public class DatabaseConfiguration {
     @Value("${spring.datasource.driver-class-name}")
     String driver;
 
+    // Configuração DataSource
    // @Bean
     public DataSource dataSource(){
         DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -34,6 +35,8 @@ public class DatabaseConfiguration {
         return ds;
     }
 
+
+    // Configuração hikari
     @Bean
     public DataSource hikariDataSource(){
         HikariConfig config = new HikariConfig();
