@@ -26,13 +26,32 @@ class LivroRepositoryTest {
         livro.setIsbn("90029-84732");
         livro.setPreco(BigDecimal.valueOf(100));
         livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Objetos nao indentificados");
+        livro.setTitulo("Livros de ficcao");
         livro.setDataPublicacao(LocalDate.of(1980, 2, 2));
 
         Autor autor = autorRepository.findById(UUID.fromString("fe73bfd1-1b42-47f2-94ef-a90cddf31caa")).orElse(null);
 
         livro.setAutor(autor);
-        repository.save(livro);
 
+        repository.save(livro);
+    }
+
+    @Test
+    void salvarCascadeTest() {
+        Livro livro = new Livro();
+        livro.setIsbn("90029-84732");
+        livro.setPreco(BigDecimal.valueOf(100));
+        livro.setGenero(GeneroLivro.FANTASIA);
+        livro.setTitulo("The promise of never lands");
+        livro.setDataPublicacao(LocalDate.of(1980, 2, 2));
+
+        Autor autor = new Autor();
+        autor.setNome("HollandJr");
+        autor.setNacionalidade("Inglis");
+        autor.setDataNascimento(LocalDate.of(1964, 5, 27));
+
+        livro.setAutor(autor);
+
+        repository.save(livro);
     }
 }

@@ -23,46 +23,18 @@ public class Autor {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    // Need @Getter and @Setter, without don't's works (Sem esses @Getter e @Setter não funciona, não sei o por que e apenas no nome)
+    @Getter
+    @Setter
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
+
     @Column(name = "nacionalidade", length = 50, nullable = false)
     private String nacionalidade;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public String getNacionalidade() {
-        return nacionalidade;
-    }
-
-    public void setNacionalidade(String nacionalidade) {
-        this.nacionalidade = nacionalidade;
-    }
 
     // For the framework use
     @Deprecated
