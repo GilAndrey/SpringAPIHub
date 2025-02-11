@@ -1,6 +1,7 @@
 package io.github.springboot.libraryapi.repository;
 
 import io.github.springboot.libraryapi.model.Autor;
+import io.github.springboot.libraryapi.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,9 @@ public class AutorRepositoryTest {
 
     @Autowired
     AutorRepository repository;
+
+    @Autowired
+    LivroRepository livroRepository;
 
     @Test
     public void salvarTest() {
@@ -67,4 +71,15 @@ public class AutorRepositoryTest {
         var maria = repository.findById(id).get();
         repository.delete(maria);
     }
+
+    @Test
+    void buscarLivroTest(){
+        UUID id = UUID.fromString("bfb15179-45b7-4f0e-88a8-b18e5b9cac0c");
+        Livro livro = livroRepository.findById(id).orElse(null);
+        System.out.println("Livro: ");
+        System.out.println(livro.getTitulo());
+        System.out.println("Autor: ");
+        System.out.println(livro.getAutor().getNome());
+    }
+
 }

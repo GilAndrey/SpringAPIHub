@@ -89,7 +89,10 @@ public class Livro {
 //        this.autor = autor;
 //    }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(
+            // cascade = CascadeType.ALL)
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(name = "id_autor")
     private Autor autor;
 
