@@ -41,7 +41,6 @@ public class Autor {
     public Autor(){
     }
 
-  @OneToMany(mappedBy = "autor")
-    @Transient
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
     private List<Livro> livros;
 }
