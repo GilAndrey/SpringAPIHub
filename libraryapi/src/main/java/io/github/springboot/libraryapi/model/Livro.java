@@ -2,6 +2,7 @@ package io.github.springboot.libraryapi.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "livro")
 @Data // - Lombok annotation with get @Getter @Setter @ToString @EqualsAndHashCode @RequiredArgsConstructor
+@ToString(exclude = "autor")
 public class Livro {
 
     @Id

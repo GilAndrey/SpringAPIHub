@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "autor", schema = "public")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "livros")
 public class Autor {
 
     // @Column not necessary, byt it's just for learning
@@ -41,6 +41,6 @@ public class Autor {
     public Autor(){
     }
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Livro> livros;
 }
