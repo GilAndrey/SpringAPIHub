@@ -1,0 +1,14 @@
+package io.github.springboot.libraryapi.services;
+
+import io.github.springboot.libraryapi.repository.LivroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BookService {
+
+    @Autowired
+    private LivroRepository livroRepository;
+
+
+}

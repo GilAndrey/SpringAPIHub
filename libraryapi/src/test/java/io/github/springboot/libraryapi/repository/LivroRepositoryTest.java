@@ -26,6 +26,7 @@ class LivroRepositoryTest {
 
     @Test
     void salvarTest() {
+
         Livro livro = new Livro();
         livro.setIsbn("90029-84732");
         livro.setPreco(BigDecimal.valueOf(100));
@@ -66,16 +67,16 @@ class LivroRepositoryTest {
     @Test
     void salvarCascadeTest() {
         Livro livro = new Livro();
-        livro.setIsbn("90029-84732");
-        livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FANTASIA);
-        livro.setTitulo("The promise of never lands");
-        livro.setDataPublicacao(LocalDate.of(1980, 2, 2));
+        livro.setIsbn("41270-82347");
+        livro.setPreco(BigDecimal.valueOf(800));
+        livro.setGenero(GeneroLivro.ROMANCE);
+        livro.setTitulo("Kama Sutra");
+        livro.setDataPublicacao(LocalDate.of(2025, 2, 10));
 
         Autor autor = new Autor();
-        autor.setNome("HollandJr");
-        autor.setNacionalidade("Inglis");
-        autor.setDataNascimento(LocalDate.of(1964, 5, 27));
+        autor.setNome("Venic");
+        autor.setNacionalidade("Araripinense");
+        autor.setDataNascimento(LocalDate.of(2004, 12, 24));
 
         livro.setAutor(autor);
 
@@ -140,6 +141,30 @@ class LivroRepositoryTest {
 
         List<Livro> list = repository.findByTituloAndPreco(tituloPesquisa, preco);
         list.forEach(System.out::println);
+    }
+
+    @Test
+    void listarLivrosComQueryJPQL() {
+        var resultado = repository.listarTodosPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutoresDosLivros() {
+        var resultado = repository.listarAutoresDosLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosNaoRepetidoDosLivros() {
+        var resultado = repository.listarNomesDiferentesLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosAutoresBrasileiros() {
+        var resultado = repository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
     }
 
 }
