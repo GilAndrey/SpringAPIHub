@@ -1,9 +1,11 @@
 package io.github.springboot.libraryapi.repository;
 
 import io.github.springboot.libraryapi.model.Autor;
+import io.github.springboot.libraryapi.model.GeneroLivro;
 import io.github.springboot.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -59,4 +61,15 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
             order by l.genero
             """)
     List<String> listarGenerosAutoresBrasileiros();
+
+    // named parameters -> parametros nomeados
+    @Query(" select l from Livro l where l.genero = :genero order by :paramOdernacao ")
+    List<Livro> findByGenero(
+            @Param("genero") GeneroLivro generoLivro,
+            @Param("paramOdernacao") String nomePropriedade
+    );
+
+    @Query(" select l from Livro l where l.genero = ?1 order by ?2 ")
+    List<Livro> findByGeneroPositionalParameters(GeneroLivro generoLivro, String nomePropriedade);
+
 }
