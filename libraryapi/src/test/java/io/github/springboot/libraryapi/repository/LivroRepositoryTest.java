@@ -6,6 +6,7 @@ import io.github.springboot.libraryapi.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -30,13 +31,13 @@ class LivroRepositoryTest {
         Livro livro = new Livro();
         livro.setIsbn("90029-84732");
         livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Livros de ficcao");
+        livro.setGenero(GeneroLivro.CIENCIA);
+        livro.setTitulo("Ciencias da computaria");
         livro.setDataPublicacao(LocalDate.of(1980, 2, 2));
 
         Autor autor = autorRepository.findById(UUID.fromString("fe73bfd1-1b42-47f2-94ef-a90cddf31caa")).orElse(null);
 
-        livro.setAutor(autor);
+//        livro.setAutor(autor);
 
         repository.save(livro);
     }
@@ -178,4 +179,14 @@ class LivroRepositoryTest {
         var resultado = repository.findByGeneroPositionalParameters(GeneroLivro.MISTERIO, "preco");
         resultado.forEach(System.out::println);
     }
+
+    @Test
+    void deletePorGeneroTest() {
+        repository.deleteByGenero(GeneroLivro.CIENCIA);
+   }
+
+   @Test
+    void updateDataPublicacaoTest() {
+        repository.updateDataPublicacao(LocalDate.of(2000, 1, 1));
+   }
 }
