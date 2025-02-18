@@ -6,7 +6,6 @@ import io.github.springboot.libraryapi.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -45,23 +44,27 @@ class LivroRepositoryTest {
     // Manual version - recommended
     @Test
     void salvarAutorELivroTest() {
-        Livro livro = new Livro();
-        livro.setIsbn("90029-84732");
-        livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FANTASIA);
-        livro.setTitulo("Xo xing xho li");
-        livro.setDataPublicacao(LocalDate.of(1980, 2, 2));
 
+        // Salva o autor
         Autor autor = new Autor();
-        autor.setNome("Xing lang in");
-        autor.setNacionalidade("Chinese");
+        autor.setNome("Francisca");
+        autor.setNacionalidade("Brasileira");
         autor.setDataNascimento(LocalDate.of(1994, 9, 11));
 
         autorRepository.save(autor);
 
+        // Salva o livro
+        Livro livro = new Livro();
+        livro.setIsbn("90029-84732");
+        livro.setPreco(BigDecimal.valueOf(100));
+        livro.setGenero(GeneroLivro.FANTASIA);
+        livro.setTitulo("Francisca na casa");
+        livro.setDataPublicacao(LocalDate.of(1980, 2, 2));
+
         livro.setAutor(autor);
 
         repository.save(livro);
+
     }
 
     // Test with cascade, not recommended
@@ -100,7 +103,7 @@ class LivroRepositoryTest {
 
     @Test
     void deletar() {
-        UUID idLivro = UUID.fromString("5ea1b9f4-8c05-4ed9-bed5-cf6361eb9425");
+        UUID idLivro = UUID.fromString("bd569724-a7cf-40eb-8ac8-0819c86802ce");
         repository.deleteById(idLivro);
     }
 
