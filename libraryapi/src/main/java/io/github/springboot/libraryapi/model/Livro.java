@@ -2,6 +2,8 @@ package io.github.springboot.libraryapi.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -20,19 +22,29 @@ public class Livro {
     private UUID id;
 
     @Column(name = "isbn", length = 20, nullable = false)
+    @Getter
+    @Setter
     private String isbn;
 
     @Column(name = "titulo", length = 150, nullable = false)
+    @Getter
+    @Setter
     private String titulo;
 
     @Column(name = "data_publicacao")
+    @Getter
+    @Setter
     private LocalDate dataPublicacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "genero", length = 30, nullable = false)
+    @Getter
+    @Setter
     private GeneroLivro genero;
 
     @Column(name = "preco", precision = 18, scale = 2)
+    @Getter
+    @Setter
     private BigDecimal preco;
 
 //    public UUID getId() {
@@ -40,7 +52,7 @@ public class Livro {
 //    }
 //
 //    public void setId(UUID id) {
-//        this.id = id;
+//       this.id = id;
 //    }
 //
 //    public String getIsbn() {
