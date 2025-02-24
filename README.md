@@ -10,7 +10,8 @@
 - Melhorar habilidades de versionamento e documentação de código
 
 ## 🚀 Tecnologia utilizada
-- Java e SpringBoot
+- Java e SpringBoot //
+- Tecnologias banco de Dados
 
 ## 🎓 Aprendizados Esperados
 
