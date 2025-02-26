@@ -2,6 +2,7 @@ package io.github.springboot.libraryapi.controller;
 
 import io.github.springboot.libraryapi.controller.dto.AutorDTO;
 import io.github.springboot.libraryapi.controller.dto.ErroResposta;
+import io.github.springboot.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.springboot.libraryapi.model.Autor;
 import io.github.springboot.libraryapi.service.AutorService;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +27,24 @@ public class AutorController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@RequestBody AutorDTO autor) {
-        Autor autorEntidade = autor.mapearParaAutor();
-        service.salvar(autorEntidade);
+    public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor) {
+        try {
+            Autor autorEntidade = autor.mapearParaAutor();
+            service.salvar(autorEntidade);
 
-        // http://localhost:8080/autores/bf201e28-1bf5-4e87-9e7a-de36058939a9
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(autorEntidade.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+            // http://localhost:8080/autores/bf201e28-1bf5-4e87-9e7a-de36058939a9
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(autorEntidade.getId())
+                    .toUri();
+            return ResponseEntity.created(location).build();
+        }
+        catch (RegistroDuplicadoException e) {
+            e.getMessage();
+            var erroDTO = ErroResposta.conflito(e.getMessage());
+            return ResponseEntity.status(erroDTO.status()).body(erroDTO);
+        }
     }
 
     @GetMapping("{id}")

@@ -2,6 +2,7 @@ package io.github.springboot.libraryapi.service;
 
 import io.github.springboot.libraryapi.model.Autor;
 import io.github.springboot.libraryapi.repository.AutorRepository;
+import io.github.springboot.libraryapi.validator.AutorValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +14,15 @@ public class AutorService {
 
     private final AutorRepository repository;
 
-    public AutorService(AutorRepository repository){
+    private final AutorValidator validator;
+
+    public AutorService(AutorRepository repository, AutorValidator validator){
         this.repository = repository;
+        this.validator = validator;
     }
 
     public Autor salvar(Autor autor) {
+        validator.validar(autor);
         return repository.save(autor);
     }
 
@@ -25,6 +30,7 @@ public class AutorService {
         if (autor.getId() == null) {
             throw new IllegalArgumentException("Para atualizar, é necessario que o autor já esteja salvo na base");
         }
+        validator.validar(autor);
         repository.save(autor);
     }
 
