@@ -1,6 +1,7 @@
 package io.github.springboot.libraryapi.controller;
 
 import io.github.springboot.libraryapi.controller.dto.AutorDTO;
+import io.github.springboot.libraryapi.controller.dto.ErroResposta;
 import io.github.springboot.libraryapi.model.Autor;
 import io.github.springboot.libraryapi.service.AutorService;
 import org.springframework.http.ResponseEntity;
