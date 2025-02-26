@@ -1,7 +1,9 @@
 package io.github.springboot.libraryapi.service;
 
+import io.github.springboot.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.springboot.libraryapi.model.Autor;
 import io.github.springboot.libraryapi.repository.AutorRepository;
+import io.github.springboot.libraryapi.repository.LivroRepository;
 import io.github.springboot.libraryapi.validator.AutorValidator;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,12 @@ public class AutorService {
 
     private final AutorValidator validator;
 
-    public AutorService(AutorRepository repository, AutorValidator validator){
+    private final LivroRepository livroRepository;
+
+    public AutorService(AutorRepository repository, AutorValidator validator, LivroRepository livroRepository){
         this.repository = repository;
         this.validator = validator;
+        this.livroRepository = livroRepository;
     }
 
     public Autor salvar(Autor autor) {
@@ -39,6 +44,9 @@ public class AutorService {
     }
 
     public void deletar(Autor autor) {
+        if (possuiLivro(autor)) {
+            throw new OperacaoNaoPermitidaException("Não é possivel deletar o Autor que possui livro!");
+        }
         repository.delete(autor);
     }
 
@@ -56,5 +64,7 @@ public class AutorService {
         return repository.findAll();
     }
 
-
+    public boolean possuiLivro(Autor autor) {
+        return livroRepository.existsByAutor(autor);
+    }
 }
