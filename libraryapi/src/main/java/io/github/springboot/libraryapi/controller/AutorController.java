@@ -6,6 +6,7 @@ import io.github.springboot.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.springboot.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.springboot.libraryapi.model.Autor;
 import io.github.springboot.libraryapi.service.AutorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,13 +20,10 @@ import java.util.stream.Collectors;
 // http://localhost:8080/autores
 @RestController
 @RequestMapping("/autores")
+@RequiredArgsConstructor
 public class AutorController {
 
     private final AutorService service;
-
-    public AutorController(AutorService service) {
-        this.service = service;
-    }
 
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor) {
