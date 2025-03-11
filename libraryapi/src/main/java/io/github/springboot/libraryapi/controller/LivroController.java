@@ -23,7 +23,7 @@ public class LivroController {
     public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
         try {
 
-
+            return ResponseEntity.ok(dto);
 
         }
         catch (RegistroDuplicadoException e) {
