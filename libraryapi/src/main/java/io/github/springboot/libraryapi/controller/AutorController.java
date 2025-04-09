@@ -11,7 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.net.URI;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/autores")
 @RequiredArgsConstructor
-public class AutorController {
+public class AutorController implements GenericController {
 
     private final AutorService service;
     private final AutorMapper mapper;
@@ -33,13 +33,9 @@ public class AutorController {
         try {
             Autor autor = mapper.toEntity(dto);
             service.salvar(autor);
+            // AKi fica a utilização do GenericController
+            URI location = gerarHeaderLocation(autor.getId());
 
-            // http://localhost:8080/autores/bf201e28-1bf5-4e87-9e7a-de36058939a9
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(autor.getId())
-                    .toUri();
             return ResponseEntity.created(location).build();
         }
         catch (RegistroDuplicadoException e) {
