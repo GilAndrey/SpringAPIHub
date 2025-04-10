@@ -1,9 +1,7 @@
 package io.github.springboot.libraryapi.controller;
 
 import io.github.springboot.libraryapi.controller.dto.CadastroLivroDTO;
-import io.github.springboot.libraryapi.controller.dto.ErroResposta;
 import io.github.springboot.libraryapi.controller.mappers.LivroMapper;
-import io.github.springboot.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.springboot.libraryapi.model.Livro;
 import io.github.springboot.libraryapi.service.LivroService;
 import jakarta.validation.Valid;
@@ -23,19 +21,14 @@ public class LivroController implements GenericController {
     private final LivroMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
-        try {
-            Livro livro = mapper.toEntity(dto); // Mapear dto para entidade
-            service.salvar(livro); // Enviar a entidade para o service validar e salvar na base
-            var url = gerarHeaderLocation(livro.getId()); // Cria uma url parra acesso dos dados do livro
+    public ResponseEntity<Void> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
 
-            return ResponseEntity.created(url).build();
+        Livro livro = mapper.toEntity(dto); // Mapear dto para entidade
+        service.salvar(livro); // Enviar a entidade para o service validar e salvar na base
+        var url = gerarHeaderLocation(livro.getId()); // Cria uma url parra acesso dos dados do livro
 
-        }
-        catch (RegistroDuplicadoException e) {
-            var erroDTO = ErroResposta.conflito(e.getMessage());
-            return ResponseEntity.status(erroDTO.status()).body(erroDTO);
-        }
+        return ResponseEntity.created(url).build();
+
 
     }
 }
