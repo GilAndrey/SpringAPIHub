@@ -9,7 +9,7 @@ public class LivroSpecs {
     // Todos os parametros passados sao o resumo root = Dados navegaos, query = CriteriQuery e cb = CriteriBuilder
     // where isbn = :isbn -> Fazendo a comparaçao do get("isbn") com o isbn passado
     public static Specification<Livro> isbnEqual(String isbn) {
-        return (root, query, cb) -> cb.equal(root.get("isb"), isbn);
+        return (root, query, cb) -> cb.equal(root.get("isbn"), isbn);
     }
 
     // Para comparar o titulo do livro, e passando para Maisculo para melhor comparaçao
@@ -22,5 +22,11 @@ public class LivroSpecs {
     // Para comparar o genero
     public static Specification<Livro> generoEqual(GeneroLivro genero) {
         return (root, query, cb) -> cb.equal(root.get("genero"), genero);
+    }
+
+    public static Specification<Livro> anoPublicacaoEqual(Integer anoPublicacao) {
+        // and to_char(data_publicacao, 'YYYY') = :anoPublicacao
+        return (root, query, cb) -> cb.equal( cb.function("to_char", String.class,
+                root.get("dataPublicacao"), cb.literal("YYYY")), anoPublicacao.toString());
     }
 }

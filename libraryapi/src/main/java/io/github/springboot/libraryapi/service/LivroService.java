@@ -3,7 +3,6 @@ package io.github.springboot.libraryapi.service;
 import io.github.springboot.libraryapi.model.GeneroLivro;
 import io.github.springboot.libraryapi.model.Livro;
 import io.github.springboot.libraryapi.repository.LivroRepository;
-import io.github.springboot.libraryapi.repository.specs.LivroSpecs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class LivroService {
         repository.delete(livro);
     }
 
-    public List<Livro> pesquisa(String isbn, String titulo, String nomeAutor, GeneroLivro genero, Integer publicacao) {
+    public List<Livro> pesquisa(String isbn, String titulo, String nomeAutor, GeneroLivro genero, Integer anoPublicacao) {
 
         // select * from livro where isbn = :isbn and nomeAutor =
 
@@ -42,7 +41,7 @@ public class LivroService {
 //                        .and(LivroSpecs.generoEqual(genero)));
 
         // select * from livro where 0 = 0
-        Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction());
+        Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction() );
 
         // Utilizando o import static, não precisa passar a Function
         if(isbn != null) {
@@ -56,6 +55,10 @@ public class LivroService {
 
         if (genero != null) {
             specs = specs.and(generoEqual(genero));
+        }
+
+        if (anoPublicacao != null) {
+            specs = specs.and(anoPublicacaoEqual(anoPublicacao));
         }
 
         return repository.findAll(isbnEqual(isbn));
