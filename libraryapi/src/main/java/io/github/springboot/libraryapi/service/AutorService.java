@@ -46,6 +46,7 @@ public class AutorService {
             throw new OperacaoNaoPermitidaException("Não é possivel deletar o Autor que possui livro!");
         }
         repository.delete(autor);
+
     }
 
     public List<Autor> pesquisa(String nome, String nacionalidade) {
