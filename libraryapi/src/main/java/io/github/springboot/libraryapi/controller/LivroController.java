@@ -25,31 +25,30 @@ public class LivroController implements GenericController {
 
     @PostMapping
     public ResponseEntity<Void> salvar(@RequestBody @Valid CadastroLivroDTO dto) {
-
-        Livro livro = mapper.toEntity(dto); // Mapear dto para entidade
-        service.salvar(livro); // Enviar a entidade para o service validar e salvar na base
-        var url = gerarHeaderLocation(livro.getId()); // Cria uma url parra acesso dos dados do livro
-
+        Livro livro = mapper.toEntity(dto);
+        service.salvar(livro);
+        var url = gerarHeaderLocation(livro.getId());
         return ResponseEntity.created(url).build();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(@PathVariable("id") String id) {
-        return service.obterPorId(UUID.fromString(id)).map(livro -> {
-            var dto = mapper.toDTO(livro);
-            return ResponseEntity.ok(dto);
-        }).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(
+            @PathVariable("id") String id){
+        return service.obterPorId(UUID.fromString(id))
+                .map(livro -> {
+                    var dto = mapper.toDTO(livro);
+                    return ResponseEntity.ok(dto);
+                }).orElseGet( () -> ResponseEntity.notFound().build() );
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Object> deletar(@PathVariable("id") String id) {
+    public ResponseEntity<Object> deletar(@PathVariable("id") String id){
         return service.obterPorId(UUID.fromString(id))
                 .map(livro -> {
                     service.deletar(livro);
                     return ResponseEntity.noContent().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 
     @GetMapping
     public ResponseEntity<List<ResultadoPesquisaLivroDTO>> pesquisa(
@@ -65,12 +64,33 @@ public class LivroController implements GenericController {
             Integer anoPublicacao
     ){
         var resultado = service.pesquisa(isbn, titulo, nomeAutor, genero, anoPublicacao);
-
-        var lista = resultado.stream()
+        var lista = resultado
+                .stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(lista);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid CadastroLivroDTO dto) {
+        return service.obterPorId(UUID.fromString(id))
+                .map(livro -> {
+                    Livro entidadeAux = mapper.toEntity(dto);
+
+                    livro.setDataPublicacao(entidadeAux.getDataPublicacao());
+                    livro.setIsbn(entidadeAux.getIsbn());
+                    livro.setPreco(entidadeAux.getPreco());
+                    livro.setGenero(entidadeAux.getGenero());
+                    livro.setTitulo(entidadeAux.getTitulo());
+                    livro.setAutor(entidadeAux.getAutor());
+
+                    service.atualizar(livro);
+
+                    return ResponseEntity.noContent().build();
+
+                }).orElseGet( () -> ResponseEntity.notFound().build());
+
 
     }
 
