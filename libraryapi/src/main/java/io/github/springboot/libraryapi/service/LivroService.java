@@ -5,10 +5,16 @@ import io.github.springboot.libraryapi.model.Livro;
 import io.github.springboot.libraryapi.repository.LivroRepository;
 import io.github.springboot.libraryapi.validator.LivroValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,8 +42,14 @@ public class LivroService {
     }
 
     //isbn, titulo, nome autor, genero, ano de publicação
-    public List<Livro> pesquisa(
-            String isbn, String titulo, String nomeAutor, GeneroLivro genero, Integer anoPublicacao){
+    public Page pesquisa(
+            String isbn,
+            String titulo,
+            String nomeAutor,
+            GeneroLivro genero,
+            Integer anoPublicacao,
+            Integer pagina,
+            Integer tamanhoPagia){
 
         // select * from livro where isbn = :isbn and nomeAutor =
 
@@ -71,8 +83,10 @@ public class LivroService {
             specs = specs.and(nomeAutorLike(nomeAutor));
         }
 
+        Pageable pageRequest = (Pageable) PageRequest.of(pagina, tamanhoPagia);
 
-        return repository.findAll(specs);
+
+        return repository.findAll(specs, pageRequest);
     }
 
     public void atualizar(Livro livro) {

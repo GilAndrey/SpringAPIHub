@@ -3,6 +3,7 @@ package io.github.springboot.libraryapi.repository;
 import io.github.springboot.libraryapi.model.Autor;
 import io.github.springboot.libraryapi.model.GeneroLivro;
 import io.github.springboot.libraryapi.model.Livro;
+import org.hibernate.query.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.UUID;
  * @see LivroRepositoryTest
  */
 public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecificationExecutor<Livro> {
+
+//    Page<Livro> findByAutor(Autor autor, Pageable pageable);
 
     // Query method
     // select * from livro where id_autor = id
