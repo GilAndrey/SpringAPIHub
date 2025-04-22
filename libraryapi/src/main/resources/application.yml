@@ -7,9 +7,8 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
-#    show-sql: update
-#    show-sql: none
+    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   properties:
     hibernate.format_sql: true
