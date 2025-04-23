@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("livros")
-@RequiredArgsConstructorf
+@RequiredArgsConstructor
 public class LivroController implements GenericController {
 
     private final LivroService service;
