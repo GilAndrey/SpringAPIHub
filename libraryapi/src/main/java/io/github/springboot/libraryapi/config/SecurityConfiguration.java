@@ -17,8 +17,12 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults()) // -> Recebe autenticação via formulario de Login (Caso use o Browser)
-                .httpBasic(Customizer.withDefaults()) //  ->  Recebe autenticação via Postman ou outra aplicação
+                .httpBasic(Customizer.withDefaults()) //  ->  Recebe autenticação via Postman ou outra aplicação -> Utiliza-se em basic 64, "Não muito segura"
+                .formLogin(configurer -> {
+                    configurer.loginPage("/login").permitAll(); // -> Recebe autenticação via formulario de Login (Caso use o Browser) -> apontando para a pagina de login
+                })
+
+
                 .authorizeHttpRequests(authorize -> {
                     authorize.anyRequest().authenticated(); // -> Qualquer requisição feita para a API, tem que esta autenticada
                 })
