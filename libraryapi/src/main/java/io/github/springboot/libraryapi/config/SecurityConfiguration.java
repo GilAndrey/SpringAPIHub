@@ -6,6 +6,12 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 // Annotations para colocar em classe que é do tipo segurança
@@ -29,4 +35,28 @@ public class SecurityConfiguration {
                 .build();
     }
 
+    // Metodos de mais segurança com senhas para passar dentro do UserDetailsService
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // Ele compara o número com a senha passada para ver se é compativel -> o número é a quantidade de vezes que ele irar passar em cima do password
+        return new BCryptPasswordEncoder(10);
+    }
+
+    // Metodo para criar os cargos dentro de uma webSite
+    @Bean
+    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+        UserDetails user1 = User.builder()
+                .username("usuario")
+                .password(encoder.encode("123"))
+                .roles("USER")
+                .build();
+
+        UserDetails user2 = User.builder()
+                .username("admin")
+                .password(encoder.encode("321"))
+                .roles("ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(user1, user2);
+    }
 }
