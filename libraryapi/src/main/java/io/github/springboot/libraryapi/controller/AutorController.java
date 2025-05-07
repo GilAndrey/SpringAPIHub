@@ -6,11 +6,16 @@ import io.github.springboot.libraryapi.controller.mappers.AutorMapper;
 import io.github.springboot.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.springboot.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.springboot.libraryapi.model.Autor;
+import io.github.springboot.libraryapi.model.Usuario;
+import io.github.springboot.libraryapi.security.SecurityService;
 import io.github.springboot.libraryapi.service.AutorService;
+import io.github.springboot.libraryapi.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,6 +37,7 @@ public class AutorController implements GenericController {
     @PostMapping
     @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
+
         Autor autor = mapper.toEntity(dto);
         service.salvar(autor);
         // AKi fica a utilização do GenericController
