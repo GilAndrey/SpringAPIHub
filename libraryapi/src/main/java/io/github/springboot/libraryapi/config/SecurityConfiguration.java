@@ -1,5 +1,8 @@
 package io.github.springboot.libraryapi.config;
 
+import io.github.springboot.libraryapi.model.Usuario;
+import io.github.springboot.libraryapi.security.CustomUserDetailsService;
+import io.github.springboot.libraryapi.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -59,19 +62,21 @@ public class SecurityConfiguration {
 
     // Metodo para criar os cargos dentro de uma webSite
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        UserDetails user1 = User.builder()
-                .username("usuario")
-                .password(encoder.encode("123"))
-                .roles("USER")
-                .build();
+    public UserDetailsService userDetailsService(UsuarioService usuarioService) {
+//        UserDetails user1 = User.builder()
+//                .username("usuario")
+//                .password(encoder.encode("123"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails user2 = User.builder()
+//                .username("admin")
+//                .password(encoder.encode("321"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user1, user2);
 
-        UserDetails user2 = User.builder()
-                .username("admin")
-                .password(encoder.encode("321"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1, user2);
+        return new CustomUserDetailsService(usuarioService);
     }
 }
