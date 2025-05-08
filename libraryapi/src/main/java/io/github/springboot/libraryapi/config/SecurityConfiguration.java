@@ -26,11 +26,10 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults()) //  ->  Recebe autenticação via Postman ou outra aplicação -> Utiliza-se em basic 64, "Não muito segura"
-                .formLogin(configurer -> {
-                    configurer.loginPage("/login").permitAll(); // -> Recebe autenticação via formulario de Login (Caso use o Browser) -> apontando para a pagina de login
-                })
-
-
+//                .formLogin(configurer -> {
+//                    configurer.loginPage("/login").permitAll(); // -> Recebe autenticação via formulario de Login (Caso use o Browser) -> apontando para a pagina de login
+//                })
+                .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
 
 //                    authorize.requestMatchers("/login").permitAll();
@@ -46,6 +45,7 @@ public class SecurityConfiguration {
 
                     authorize.anyRequest().authenticated(); // -> Qualquer requisição feita para a API, tem que esta autenticada
                 })
+                .oauth2Login(Customizer.withDefaults())
                 .build();
     }
 
