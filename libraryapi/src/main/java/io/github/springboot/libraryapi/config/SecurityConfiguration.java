@@ -57,7 +57,7 @@ public class SecurityConfiguration {
     }
 
     // Metodo para criar os cargos dentro de uma webSite
-    @Bean
+    //@Bean
     public UserDetailsService userDetailsService(UsuarioService usuarioService) {
 //        UserDetails user1 = User.builder()
 //                .username("usuario")
