@@ -20,6 +20,6 @@ public class SecurityService {
             return customAuth.getUsuario();
         }
         return null;
-    }
 
+    }
 }

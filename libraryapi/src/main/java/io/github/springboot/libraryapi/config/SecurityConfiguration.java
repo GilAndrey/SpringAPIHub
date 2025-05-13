@@ -1,6 +1,7 @@
 package io.github.springboot.libraryapi.config;
 
 import io.github.springboot.libraryapi.security.CustomUserDetailsService;
+import io.github.springboot.libraryapi.security.LoginSocialSucessHandler;
 import io.github.springboot.libraryapi.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,43 +24,36 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http, LoginSocialSucessHandler successHandler) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults()) //  ->  Recebe autenticação via Postman ou outra aplicação -> Utiliza-se em basic 64, "Não muito segura"
-//                .formLogin(configurer -> {
-//                    configurer.loginPage("/login").permitAll(); // -> Recebe autenticação via formulario de Login (Caso use o Browser) -> apontando para a pagina de login
-//                })
-                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(configurer -> {
+                    configurer.loginPage("/login");
+                })
                 .authorizeHttpRequests(authorize -> {
-
-//                    authorize.requestMatchers("/login").permitAll();
-//                    authorize.requestMatchers(HttpMethod.POST,"/autores/**").hasAuthority("CADASTRAR_AUTOR"); // -> Colocando o Metodo de POST no HttpMethod.POST
-//                    authorize.requestMatchers(HttpMethod.DELETE,"/autores/**").hasRole("ADMIN"); // -> Colocando o Metodo de DELETE no HttpMethod.
-//                    authorize.requestMatchers(HttpMethod.PUT,"/autores/**").hasRole("ADMIN"); // -> Colocando o Metodo de PUT
-//                    authorize.requestMatchers(HttpMethod.GET,"/autores/**").hasAnyRole("ADMIN", "USER");
-
-
                     authorize.requestMatchers("/login/**").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/usuarios/**").permitAll();
 
-
-                    authorize.anyRequest().authenticated(); // -> Qualquer requisição feita para a API, tem que esta autenticada
+                    authorize.anyRequest().authenticated();
                 })
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> {
+                    oauth2
+                            .loginPage("/login")
+                            .successHandler(successHandler);
+                })
                 .build();
     }
 
-    // Metodos de mais segurança com senhas para passar dentro do UserDetailsService
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        // Ele compara o número com a senha passada para ver se é compativel -> o número é a quantidade de vezes que ele irar passar em cima do password
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(10);
     }
 
-    // Metodo para criar os cargos dentro de uma webSite
-    //@Bean
-    public UserDetailsService userDetailsService(UsuarioService usuarioService) {
+    //    @Bean
+    public UserDetailsService userDetailsService(UsuarioService usuarioService){
+
 //        UserDetails user1 = User.builder()
 //                .username("usuario")
 //                .password(encoder.encode("123"))
@@ -77,9 +71,8 @@ public class SecurityConfiguration {
         return new CustomUserDetailsService(usuarioService);
     }
 
-    // Remove o prefixo que o SpringBoot passa antes das roles definidas. "ROLE_"
     @Bean
-    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    public GrantedAuthorityDefaults grantedAuthorityDefaults(){
         return new GrantedAuthorityDefaults("");
     }
 }
