@@ -22,7 +22,7 @@ public class ClientService {
         return repository.save(client);
     }
 
-    public Client obterPorClinetID(String clientId) {
+    public Client obterPorClientID(String clientId) {
 
         return repository.findByClientId(clientId);
     }
