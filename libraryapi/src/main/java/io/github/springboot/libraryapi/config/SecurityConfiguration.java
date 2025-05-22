@@ -1,5 +1,6 @@
 package io.github.springboot.libraryapi.config;
 
+import io.github.springboot.libraryapi.security.JwtCustomAuthenticationFilter;
 import io.github.springboot.libraryapi.security.LoginSocialSucessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 // Annotations para colocar em classe que é do tipo segurança
@@ -20,9 +22,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
+    // Uma cadeia de Filtros
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http, LoginSocialSucessHandler successHandler) throws Exception {
+            HttpSecurity http, LoginSocialSucessHandler successHandler, JwtCustomAuthenticationFilter jwtCustomAuthenticationFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -37,6 +40,7 @@ public class SecurityConfiguration {
                         .loginPage("/login")
                         .successHandler(successHandler))
                 .oauth2ResourceServer(oauth2rs -> oauth2rs.jwt(Customizer.withDefaults()))
+                .addFilterBefore(jwtCustomAuthenticationFilter, BearerTokenAuthenticationFilter.class)
                 .build();
     }
 

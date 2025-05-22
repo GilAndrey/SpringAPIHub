@@ -44,6 +44,7 @@ public class CustomRegisteredClientRepository implements RegisteredClientReposit
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)  // Define o método de autenticação do cliente (neste caso: client_id + secret no header)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE) // Permite o tipo de grant "authorization_code" (fluxo com redirecionamento e login de usuário)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)  // Também permite "client_credentials" (sem login de usuário, usado entre sistemas)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenSettings(tokenSettings)
                 .clientSettings(clientSettings)
                 .build();
