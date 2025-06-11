@@ -1,6 +1,7 @@
 package io.github.springboot.libraryapi.controller;
 
 import io.github.springboot.libraryapi.security.CustomAuthentication;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class LoginViewController {
         }
         return "Olá " + authentication.getName();
     }
-
+    @Operation(summary = "Autorização", description = "Pega autorização do Auth")
     @GetMapping("/authorized")
     @ResponseBody
     public String getAuthorizationCode(@RequestParam("code") String code) { // -> Dont works
