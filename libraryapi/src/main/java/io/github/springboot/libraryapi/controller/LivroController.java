@@ -9,6 +9,7 @@ import io.github.springboot.libraryapi.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("livros")
 @RequiredArgsConstructor
+@Tag(name = "Livro")
 public class LivroController implements GenericController {
 
     private final LivroService service;
@@ -51,7 +53,7 @@ public class LivroController implements GenericController {
             @ApiResponse(responseCode = "404", description = "Livro não encontrado"),
     })
     public ResponseEntity<ResultadoPesquisaLivroDTO> obterDetalhes(
-            @PathVariable("id") String id){
+            @PathVariable("id") String id) {
         return service.obterPorId(UUID.fromString(id))
                 .map(livro -> {
                     var dto = mapper.toDTO(livro);

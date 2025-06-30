@@ -29,7 +29,6 @@ public class SecurityConfiguration {
             HttpSecurity http, LoginSocialSucessHandler successHandler, JwtCustomAuthenticationFilter jwtCustomAuthenticationFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults())
                 .formLogin(configurer -> configurer.loginPage("/login"))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/login/**").permitAll();
