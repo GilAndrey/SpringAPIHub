@@ -3,6 +3,7 @@ package io.github.gilandrey.sbootexp_security.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true) // Habilita para configurar as permissões (Utilizado para @PreAuthorize)
 public class SecurityConfig {
 
     // Filter Chain é um filtro que lista e processam cada requisição HTTP que chega na aplicação
@@ -27,7 +29,6 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(customizer -> {
                     customizer.requestMatchers("/public").permitAll(); // Permite que qualquer um acesse /public sem autorização
-                    customizer.requestMatchers("/admin").hasRole("ADMIN");
                     customizer.anyRequest().authenticated(); // E todas as outras rotas precise de autorização
                 })
                 .httpBasic(Customizer.withDefaults()) // Permite a autorização via HTTP basic que é o pop-up do navegador (alert javascript)
