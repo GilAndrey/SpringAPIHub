@@ -6,6 +6,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ public class SecurityConfig {
             HttpSecurity http, SenhaMasterAuthenticationProvider senhaMasterAuthenticationProvider,
             CustomFilter customFilter) throws Exception {
         return http
+                .csrf(AbstractHttpConfigurer::disable) // Filtro de aplicação web (Utilizando API, não Web)
                 .authorizeHttpRequests(customizer -> {
                     customizer.requestMatchers("/public").permitAll(); // Permite que qualquer um acesse /public sem autorização
                     customizer.anyRequest().authenticated(); // E todas as outras rotas precise de autorização
