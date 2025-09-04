@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(customizer -> {
                     customizer.requestMatchers("/public").permitAll(); // Permite que qualquer um acesse /public sem autorização
+                    customizer.requestMatchers("/admin").hasRole("ADMIN");
                     customizer.anyRequest().authenticated(); // E todas as outras rotas precise de autorização
                 })
                 .httpBasic(Customizer.withDefaults()) // Permite a autorização via HTTP basic que é o pop-up do navegador (alert javascript)
@@ -57,5 +59,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // BCrypt é o formato que a senha sera criptografada (recomendado)
+    }
+
+    // É uma function Bean, para fazer a configuração do prefixo que o Security pede
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); // Passar o prefixo desejado, "comun é ROLE_"
     }
 }
