@@ -2,6 +2,7 @@ package io.github.gilandrey.sbootexp_security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http, SenhaMasterAuthenticationProvider senhaMasterAuthenticationProvider,
+            CustomAuthenticationProvider customAuthenticationProvider,
             CustomFilter customFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // Filtro de aplicação web (Utilizando API, não Web)
@@ -36,6 +38,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults()) // Permite a autorização via HTTP basic que é o pop-up do navegador (alert javascript)
                 .formLogin(Customizer.withDefaults()) // Habilita a autorização via o Formulario de login.
                 .authenticationProvider(senhaMasterAuthenticationProvider)
+                .authenticationProvider(customAuthenticationProvider)
                 .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
