@@ -2,7 +2,7 @@ package io.github.gilandrey.sbootexp_security.config;
 
 import io.github.gilandrey.sbootexp_security.domain.entity.Usuario;
 import io.github.gilandrey.sbootexp_security.domain.security.CustomAuthentication;
-import io.github.gilandrey.sbootexp_security.domain.security.IndentificacaoUsuario;
+import io.github.gilandrey.sbootexp_security.domain.service.IdentificacaoUsuario;
 import io.github.gilandrey.sbootexp_security.domain.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -31,13 +31,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (usuario != null) {
             boolean senhasBatem = passwordEncoder.matches(senha, usuario.getSenha());// .matches, utilizado para comparar senhas (senha crua, get.senha criptografada)
             if (senhasBatem) {
-                IndentificacaoUsuario indentificacaoUsuario = new IndentificacaoUsuario(
+                IdentificacaoUsuario identificacaoUsuario = new IdentificacaoUsuario(
                         usuario.getId(),
                         usuario.getNome(),
                         usuario.getLogin(),
                         usuario.getPermissoes()
                 );
-                return new CustomAuthentication(indentificacaoUsuario);
+                return new CustomAuthentication(identificacaoUsuario);
             }
         }
         return null;

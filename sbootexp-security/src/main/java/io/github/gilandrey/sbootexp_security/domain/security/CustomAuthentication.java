@@ -1,5 +1,6 @@
 package io.github.gilandrey.sbootexp_security.domain.security;
 
+import io.github.gilandrey.sbootexp_security.domain.service.IdentificacaoUsuario;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,9 +11,9 @@ import java.util.stream.Collectors;
 // Classe para a propria Logica de validação de Credenciais
 public class CustomAuthentication implements Authentication {
 
-    private final IndentificacaoUsuario indentificacao;
+    private final IdentificacaoUsuario indentificacao;
 
-    public CustomAuthentication(IndentificacaoUsuario indentificacao) {
+    public CustomAuthentication(IdentificacaoUsuario indentificacao) {
         if (indentificacao == null) {
             throw new ExceptionInInitializerError("Não é possivel criar um customAuthentication sem a indentificaçao do usuario");
         }

@@ -1,5 +1,6 @@
 package io.github.gilandrey.sbootexp_security.config;
 
+import io.github.gilandrey.sbootexp_security.domain.service.IdentificacaoUsuario;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +30,13 @@ public class CustomFilter extends OncePerRequestFilter {
 
         if (secretHeader != null) {
             if (secretHeader.equals("secr3t")) {
+                var identificacaoUsuario = new IdentificacaoUsuario(
+                        "id-secret",
+                        "Muito Secreto",
+                        "x-secret",
+                        List.of("USER")
+                );
+
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         "Muito secreto", null, List.of(new SimpleGrantedAuthority("USER")));
 

@@ -1,4 +1,4 @@
-package io.github.gilandrey.sbootexp_security.domain.security;
+package io.github.gilandrey.sbootexp_security.domain.service;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,14 +8,13 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class IndentificacaoUsuario {
-
+public class IdentificacaoUsuario {
     private String id;
     private String nome;
     private String login;
     private List<String> permissoes;
 
-    public IndentificacaoUsuario(String id, String nome, String login, List<String> permissoes) {
+    public IdentificacaoUsuario(String id, String nome, String login, List<String> permissoes) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -23,7 +22,7 @@ public class IndentificacaoUsuario {
     }
 
     public List<String> getPermissoes() {
-        if (permissoes == null) {
+        if(permissoes == null){
             permissoes = new ArrayList<>();
         }
         return permissoes;
