@@ -5,6 +5,7 @@ import io.github.gilandrey.sbootexp_security.domain.entity.Usuario;
 import io.github.gilandrey.sbootexp_security.domain.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Usuario> salvar(@RequestBody CadastroUsuarioDTO body) {
         Usuario usuarioSalvo = usuarioService.salvar(body.getUsuario(), body.getPermissoes());
         return ResponseEntity.ok(usuarioSalvo);
